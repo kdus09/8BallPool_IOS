@@ -105,6 +105,8 @@ body {
 
 .hidden {
   display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* 🧊 Dashboard trung tâm (Light Frost) */
