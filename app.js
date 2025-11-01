@@ -284,4 +284,34 @@ function animate() {
   if (powerOn) draw();
   requestAnimationFrame(animate);
 }
+function makeDraggable(el) {
+  let startX = 0, startY = 0, currentX = 0, currentY = 0, isDragging = false;
+
+  el.addEventListener("touchstart", (e) => {
+    const touch = e.touches[0];
+    startX = touch.clientX - currentX;
+    startY = touch.clientY - currentY;
+    isDragging = true;
+    el.style.transition = "none";
+  });
+
+  window.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    const touch = e.touches[0];
+    currentX = touch.clientX - startX;
+    currentY = touch.clientY - startY;
+    el.style.transform = `translate(${currentX}px, ${currentY}px)`;
+  });
+
+  window.addEventListener("touchend", () => {
+    isDragging = false;
+    el.style.transition = "transform 0.2s ease";
+  });
+}
+
+// 💬 Cho phép bubble ⚙️ di chuyển
+makeDraggable(bubbleMenu);
+
+// 🧊 Nếu muốn cả Dashboard có thể kéo nhẹ toàn khối:
+makeDraggable(dashboard);
 animate();
