@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Billiard Vision v4 HUD</title>
+  <link rel="icon" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+  <script src="libs/opencv.js"></script>
+  <script src="libs/tensorflow.js"></script>
+</head>
+<body>
+  <header>
+    <img src="assets/logo.svg" class="logo">
+    <h1>Billiard Vision AI</h1>
+  </header>
+
+  <main>
+    <aside id="menu">
+      <h2>⚙️ Điều khiển</h2>
+      <button id="ai">AI Detect</button>
+      <button id="manual">Manual Align</button>
+      <button id="layers">Layers</button>
+      <button id="shot">Screenshot</button>
+      <button id="settings">Settings</button>
+    </aside>
+
+    <section id="app">
+      <video id="camera" autoplay playsinline></video>
+      <canvas id="overlay"></canvas>
+    </section>
+  </main>
+
+  <!-- popup giới thiệu -->
+  <div id="welcome" class="popup">
+    <div class="popup-box">
+      <h2>🎱 Billiard Vision AI</h2>
+      <p>Đây là ứng dụng miễn phí do Lê Thế Khôi tạo ra.<br>Nhấn OK để bắt đầu!</p>
+      <button id="ok">OK</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
