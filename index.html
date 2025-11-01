@@ -2,46 +2,107 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Billiard Vision v4 HUD</title>
-  <link rel="icon" href="assets/icon.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>8BallPool_IOS – BILAR v9 PRO Dashboard</title>
+
+  <!-- ✅ iPhone WebApp Settings -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="8BallPool_IOS">
+
+  <!-- ✅ Icon hiển thị trên màn hình chính -->
   <link rel="apple-touch-icon" href="assets/icon.png">
-  <link rel="manifest" href="manifest.json">
+
+  <!-- ✅ CSS chính -->
   <link rel="stylesheet" href="style.css">
-  <script src="libs/opencv.js"></script>
-  <script src="libs/tensorflow.js"></script>
 </head>
 <body>
-  <header>
-    <img src="assets/logo.svg" class="logo">
-    <h1>Billiard Vision AI</h1>
-  </header>
 
-  <main>
-    <aside id="menu">
-      <h2>⚙️ Điều khiển</h2>
-      <button id="ai">AI Detect</button>
-      <button id="manual">Manual Align</button>
-      <button id="layers">Layers</button>
-      <button id="shot">Screenshot</button>
-      <button id="settings">Settings</button>
-    </aside>
+  <!-- 🎱 Logo BILAR góc trái trên -->
+  <div id="logo-bilar">BILAR</div>
 
-    <section id="app">
-      <video id="camera" autoplay playsinline></video>
-      <canvas id="overlay"></canvas>
-    </section>
-  </main>
+  <!-- 🟩 Canvas chính (vẽ bàn bi, đường phản xạ, hiệu ứng...) -->
+  <canvas id="board"></canvas>
 
-  <!-- popup giới thiệu -->
-  <div id="welcome" class="popup">
-    <div class="popup-box">
-      <h2>🎱 Billiard Vision AI</h2>
-      <p>Đây là ứng dụng miễn phí do Lê Thế Khôi tạo ra.<br>Nhấn OK để bắt đầu!</p>
-      <button id="ok">OK</button>
+  <!-- 🔘 Nút Power tròn cầu vồng -->
+  <button id="powerBtn" class="power-off" aria-label="Power Toggle"></button>
+
+  <!-- 💬 Bong bóng chat mini ⚙️ (hiện khi Power ON) -->
+  <div id="bubbleMenu" class="hidden">⚙️</div>
+
+  <!-- 🧊 Menu chính (Dashboard trung tâm, hiện khi bấm bubble) -->
+  <div id="dashboard" class="hidden">
+    <div class="dashboard-container">
+      <!-- Sidebar trái -->
+      <aside class="sidebar">
+        <ul>
+          <li data-tab="intro" class="active">Giới thiệu</li>
+          <li data-tab="guide">Hướng dẫn</li>
+          <li data-tab="calibrate">Căn bàn</li>
+          <li data-tab="aim">Bi / Vẽ đường</li>
+          <li data-tab="effects">Hiệu ứng</li>
+          <li data-tab="settings">Cài đặt</li>
+          <li data-tab="reset">Đặt lại</li>
+        </ul>
+      </aside>
+
+      <!-- Nội dung bên phải -->
+      <section class="content">
+        <div id="tab-intro" class="tab active">
+          <h2>🎱 BILAR Overlay for 8BallPool_IOS</h2>
+          <p>Đây là công cụ hỗ trợ căn chỉnh bi chính xác dành cho người chơi 8 Ball Pool trên iOS.  
+             BILAR giúp bạn vẽ đường ngắm, phản xạ bi, căn bàn và hiệu ứng neon cực kỳ mượt mà, hoàn toàn miễn phí.</p>
+        </div>
+
+        <div id="tab-guide" class="tab">
+          <h2>📘 Hướng dẫn sử dụng</h2>
+          <ol>
+            <li>Bật <b>Power</b> để khởi động hệ thống.</li>
+            <li>Nhấn ⚙️ để mở <b>Menu chính</b>.</li>
+            <li>Chọn <b>Căn bàn</b> để kéo 4 lỗ bàn vào đúng vị trí.</li>
+            <li>Vào tab <b>Bi / Vẽ đường</b> để đặt bi trắng và bi mục tiêu.</li>
+            <li>BILAR sẽ tự hiển thị đường cầu vồng phản xạ + điểm sáng trắng cuối.</li>
+            <li>Bạn có thể tắt / bật hiệu ứng trong phần <b>Hiệu ứng</b>.</li>
+            <li>Khi hoàn tất, nhấn <b>Power</b> lần nữa để tắt toàn hệ thống.</li>
+          </ol>
+        </div>
+
+        <div id="tab-calibrate" class="tab">
+          <h2>📐 Căn bàn</h2>
+          <p>Kéo 4 vòng tròn cầu vồng tương ứng với 4 lỗ bàn.  
+             Vị trí sẽ được lưu tự động cho lần sử dụng sau.</p>
+          <button id="btnCalibrate">Bắt đầu căn bàn</button>
+        </div>
+
+        <div id="tab-aim" class="tab">
+          <h2>🎯 Đặt bi & vẽ đường</h2>
+          <p>Chạm vào màn hình để đặt bi trắng và bi mục tiêu.  
+             Bạn có thể kéo để điều chỉnh chính xác vị trí bi.</p>
+          <button id="btnAim">Đặt bi</button>
+          <button id="btnClearBalls">Xóa / Vẽ lại bi</button>
+        </div>
+
+        <div id="tab-effects" class="tab">
+          <h2>🌈 Hiệu ứng</h2>
+          <label><input type="checkbox" id="toggleNeon" checked> Đường cầu vồng động</label><br>
+          <label><input type="checkbox" id="toggleGlow" checked> Bi phát sáng đều</label>
+        </div>
+
+        <div id="tab-settings" class="tab">
+          <h2>⚙️ Cài đặt</h2>
+          <p>BILAR tự động lưu dữ liệu bàn, bi và trạng thái vào bộ nhớ thiết bị của bạn.  
+             Bạn có thể xóa toàn bộ dữ liệu trong phần <b>Đặt lại</b>.</p>
+        </div>
+
+        <div id="tab-reset" class="tab">
+          <h2>🧹 Đặt lại</h2>
+          <button id="btnResetAll">Xóa toàn bộ dữ liệu & khởi động lại</button>
+        </div>
+      </section>
     </div>
   </div>
 
+  <!-- ✅ Script chính -->
   <script src="app.js"></script>
 </body>
 </html>
