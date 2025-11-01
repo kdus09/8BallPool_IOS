@@ -266,11 +266,13 @@ function loadState() {
   holes = JSON.parse(localStorage.getItem('bilar_holes')) || [];
   neonEnabled = JSON.parse(localStorage.getItem('bilar_neon')) ?? true;
   glowEnabled = JSON.parse(localStorage.getItem('bilar_glow')) ?? true;
-  powerOn = JSON.parse(localStorage.getItem('bilar_power')) ?? false;
 
-  if (powerOn) {
-    bubbleMenu.classList.remove('hidden');
-  }
+  // 🚫 Luôn bắt đầu ở trạng thái OFF
+  powerOn = false;
+  menuOpen = false;
+  bubbleMenu.classList.add('hidden');
+  dashboard.classList.add('hidden');
+
   draw();
 }
 loadState();
