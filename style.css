@@ -1,88 +1,252 @@
+/* ===============================
+   🎨 BILAR v9 PRO Dashboard Final
+   Style cho giao diện iOS Light Frost
+   =============================== */
+
+/* Reset cơ bản */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Nền tổng thể trong suốt */
 body {
-  margin:0;
-  font-family:Poppins, sans-serif;
-  background:#fafafa;
-  color:#222;
-  display:flex;
-  flex-direction:column;
-  height:100vh;
-}
-header {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  background:#fff;
-  border-bottom:1px solid #ddd;
-  padding:10px 20px;
-  box-shadow:0 2px 4px #0001;
-}
-.logo {width:36px;height:36px;}
-main {flex:1;display:flex;}
-
-aside#menu {
-  width:220px;
-  background:#fff;
-  border-right:1px solid #ddd;
-  display:flex;
-  flex-direction:column;
-  padding:15px;
-  gap:10px;
-  box-shadow:2px 0 5px #0001;
-}
-#menu h2 {font-size:18px;margin-bottom:5px;color:#333;}
-#menu button {
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#eee;
-  cursor:pointer;
-  font-size:15px;
-  transition:.2s;
-}
-#menu button:hover {
-  background:#00f0ff;
-  color:#fff;
-  box-shadow:0 0 10px #00f0ff80;
+  background: transparent;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  user-select: none;
 }
 
-#app {flex:1;position:relative;background:#000;overflow:hidden;}
-video,canvas {
-  position:absolute;
-  top:0;left:0;
-  width:100%;height:100%;
+/* 🎱 Logo BILAR góc trái trên */
+#logo-bilar {
+  position: fixed;
+  top: 10px;
+  left: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  color: transparent;
+  background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: rainbowMove 4s linear infinite;
+  opacity: 0.6;
+  z-index: 20;
 }
-canvas {pointer-events:none;}
 
-.popup {
-  position:fixed;inset:0;
-  background:rgba(255,255,255,0.9);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:100;
+/* 🌈 Hiệu ứng chuyển màu liên tục */
+@keyframes rainbowMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 300% 0; }
 }
-.popup-box {
-  background:#fff;
-  border-radius:12px;
-  padding:20px;
-  max-width:300px;
-  border:3px solid transparent;
-  border-image:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet) 1;
-  text-align:center;
-  box-shadow:0 0 25px #0002;
+
+/* 🎯 Canvas chính (vẽ bàn bi) */
+#board {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
 }
-.popup-box h2 {
-  background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
+
+/* 🔘 Nút Power tròn cầu vồng */
+#powerBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, red, orange, yellow, green, cyan, blue, violet);
+  background-size: 400%;
+  box-shadow: 0 0 15px rgba(255,255,255,0.5);
+  animation: rainbowRotate 5s linear infinite;
+  cursor: pointer;
+  z-index: 25;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
 }
-.popup-box button {
-  margin-top:10px;
-  padding:10px 25px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(90deg,red,orange,yellow,green,cyan,blue,violet);
-  color:#fff;
-  font-weight:bold;
-  cursor:pointer;
+
+#powerBtn:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 20px rgba(255,255,255,0.7);
+}
+
+@keyframes rainbowRotate {
+  0% { background-position: 0 0; }
+  100% { background-position: 400% 0; }
+}
+
+/* 💬 Bong bóng chat mini ⚙️ */
+#bubbleMenu {
+  position: fixed;
+  right: 25px;
+  top: 40%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  z-index: 20;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+#bubbleMenu:active {
+  transform: scale(0.9);
+}
+
+.hidden {
+  display: none;
+}
+
+/* 🧊 Dashboard trung tâm (Light Frost) */
+#dashboard {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 70vw;
+  height: 80vh;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Container tổng */
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sidebar trái */
+.sidebar {
+  width: 30%;
+  background: rgba(255,255,255,0.4);
+  border-right: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sidebar ul {
+  list-style: none;
+  width: 100%;
+  text-align: left;
+  padding-left: 20px;
+}
+
+.sidebar li {
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background: rgba(255,255,255,0.7);
+}
+
+/* Nội dung bên phải */
+.content {
+  width: 70%;
+  padding: 20px;
+  overflow-y: auto;
+  color: #000;
+}
+
+.content h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.content p, .content li {
+  font-size: 15px;
+  line-height: 1.6em;
+  color: #111;
+}
+
+.content button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.content button:hover {
+  background: rgba(255,255,255,0.9);
+}
+
+/* Ẩn tab không kích hoạt */
+.tab {
+  display: none;
+}
+
+.tab.active {
+  display: block;
+}
+
+/* Cuộn mềm */
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+
+/* Hiệu ứng bóng bi trắng */
+.ball {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, white 0%, #ddd 60%, rgba(255,255,255,0.5) 100%);
+  box-shadow: 0 0 15px rgba(255,255,255,0.7);
+}
+
+/* Vòng tròn căn bàn (4 góc) */
+.hole {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, red, orange, yellow, green, cyan, blue, violet);
+  background-size: 300%;
+  animation: rainbowMove 3s linear infinite;
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  #dashboard {
+    width: 90vw;
+    height: 85vh;
+  }
+  .sidebar {
+    width: 35%;
+  }
+  .content {
+    width: 65%;
+  }
 }
